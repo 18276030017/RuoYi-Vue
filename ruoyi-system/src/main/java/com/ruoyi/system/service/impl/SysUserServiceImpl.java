@@ -28,6 +28,7 @@ import com.ruoyi.system.mapper.SysUserMapper;
 import com.ruoyi.system.mapper.SysUserPostMapper;
 import com.ruoyi.system.mapper.SysUserRoleMapper;
 import com.ruoyi.system.service.ISysConfigService;
+import com.ruoyi.system.service.ISysDeptService;
 import com.ruoyi.system.service.ISysUserService;
 
 /**
@@ -57,6 +58,9 @@ public class SysUserServiceImpl implements ISysUserService
 
     @Autowired
     private ISysConfigService configService;
+
+    @Autowired
+    private ISysDeptService deptService;
 
     @Autowired
     protected Validator validator;
@@ -489,7 +493,6 @@ public class SysUserServiceImpl implements ISysUserService
         int failureNum = 0;
         StringBuilder successMsg = new StringBuilder();
         StringBuilder failureMsg = new StringBuilder();
-        String password = configService.selectConfigByKey("sys.user.initPassword");//查询是否配置了“sys.user.initPassword”这个参数权限
         for (SysUser user : userList)
         {
             try
@@ -499,7 +502,9 @@ public class SysUserServiceImpl implements ISysUserService
                 if (StringUtils.isNull(u))
                 {
                     BeanValidators.validateWithException(validator, user);
-                    user.setPassword(SecurityUtils.encryptPassword(password));//对获取到的密码进行加密
+                    deptService.checkDeptDataScope(user.getDeptId());
+                    String password = configService.selectConfigByKey("sys.user.initPassword");
+                    user.setPassword(SecurityUtils.encryptPassword(password));
                     user.setCreateBy(operName);
                     userMapper.insertUser(user);
                     successNum++;
@@ -508,8 +513,9 @@ public class SysUserServiceImpl implements ISysUserService
                 else if (isUpdateSupport)
                 {
                     BeanValidators.validateWithException(validator, user);
-                    checkUserAllowed(u);//检查用户是否为管理员
-                    checkUserDataScope(u.getUserId());//检查用户是否拥有数据权限
+                    checkUserAllowed(u);
+                    checkUserDataScope(u.getUserId());
+                    deptService.checkDeptDataScope(user.getDeptId());
                     user.setUserId(u.getUserId());
                     user.setUpdateBy(operName);
                     userMapper.updateUser(user);

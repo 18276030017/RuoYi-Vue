@@ -1,6 +1,9 @@
 package com.ruoyi.web.controller.system;
 
 import java.util.List;
+
+import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.system.domain.SysPost;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -19,6 +22,8 @@ import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.system.domain.SysNotice;
 import com.ruoyi.system.service.ISysNoticeService;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 公告 信息操作处理
@@ -42,6 +47,17 @@ public class SysNoticeController extends BaseController
         startPage();
         List<SysNotice> list = noticeService.selectNoticeList(notice);
         return getDataTable(list);
+    }
+
+    @Log(title = "通知公告", businessType = BusinessType.EXPORT)
+    @PreAuthorize("@ss.hasPermi('system:post:export')")
+    @PostMapping("/export")
+    public void export(HttpServletResponse response, SysNotice notice)
+    {
+        List<SysNotice> list = noticeService.selectNoticeList(notice);
+        ExcelUtil<SysNotice> util = new ExcelUtil<SysNotice>(SysNotice.class);
+        System.out.println(list);
+        util.exportExcel(response, list, "通知公告");
     }
 
     /**

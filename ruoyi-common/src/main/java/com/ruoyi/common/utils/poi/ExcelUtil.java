@@ -330,7 +330,7 @@ public class ExcelUtil<T>
     public List<T> importExcel(String sheetName, InputStream is, int titleNum) throws Exception
     {
         this.type = Type.IMPORT;
-        this.wb = WorkbookFactory.create(is);
+        this.wb = WorkbookFactory.create(is);//编写工作簿
         List<T> list = new ArrayList<T>();
         // 如果指定sheet名,则取指定sheet中的内容 否则默认指向第1个sheet
         Sheet sheet = StringUtils.isNotEmpty(sheetName) ? wb.getSheet(sheetName) : wb.getSheetAt(0);

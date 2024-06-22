@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.notice.mapper.NotifyTemplateMapper">
+    
+    <resultMap type="NotifyTemplate" id="NotifyTemplateResult">
+        <result property="id"    column="id"    />
+        <result property="templateId"    column="template_id"    />
+        <result property="type"    column="type"    />
+        <result property="name"    column="name"    />
+        <result property="template"    column="template"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="description"    column="description"    />
+    </resultMap>
+
+    <sql id="selectNotifyTemplateVo">
+        select id, template_id, type, name, template, creator_id, create_time, description from notify_template
+    </sql>
+
+    <select id="selectNotifyTemplateList" parameterType="NotifyTemplate" resultMap="NotifyTemplateResult">
+        <include refid="selectNotifyTemplateVo"/>
+        <where>  
+            <if test="templateId != null  and templateId != ''"> and template_id = #{templateId}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="template != null  and template != ''"> and template = #{template}</if>
+            <if test="creatorId != null  and creatorId != ''"> and creator_id = #{creatorId}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+        </where>
+    </select>
+    
+    <select id="selectNotifyTemplateById" parameterType="Long" resultMap="NotifyTemplateResult">
+        <include refid="selectNotifyTemplateVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertNotifyTemplate" parameterType="NotifyTemplate" useGeneratedKeys="true" keyProperty="id">
+        insert into notify_template
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="templateId != null and templateId != ''">template_id,</if>
+            <if test="type != null">type,</if>
+            <if test="name != null">name,</if>
+            <if test="template != null">template,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="description != null">description,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="templateId != null and templateId != ''">#{templateId},</if>
+            <if test="type != null">#{type},</if>
+            <if test="name != null">#{name},</if>
+            <if test="template != null">#{template},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="description != null">#{description},</if>
+         </trim>
+    </insert>
+
+    <update id="updateNotifyTemplate" parameterType="NotifyTemplate">
+        update notify_template
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="templateId != null and templateId != ''">template_id = #{templateId},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="template != null">template = #{template},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="description != null">description = #{description},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteNotifyTemplateById" parameterType="Long">
+        delete from notify_template where id = #{id}
+    </delete>
+
+    <delete id="deleteNotifyTemplateByIds" parameterType="String">
+        delete from notify_template where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

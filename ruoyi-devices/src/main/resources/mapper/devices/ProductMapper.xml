@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.devices.mapper.ProductMapper">
+
+    <resultMap type="com.ruoyi.devices.domain.product.Product" id="ProductResult">
+        <result property="productId"    column="product_id"    />
+        <result property="productSort"    column="product_sort"    />
+        <result property="productName"    column="product_name"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="descripe"    column="descripe"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <resultMap type="com.ruoyi.devices.domain.product.ProductTabs" id="ProductTabsResult">
+        <result property="tabsId"      column="tabs_id"    />
+        <result property="tabsAlias"   column="tabs_alias"    />
+        <result property="tabsName"    column="tabs_name"    />
+        <result property="tabsType"    column="tabs_type"    />
+        <result property="tabsRead"    column="tabs_read"    />
+        <result property="tabsWrite"   column="tabs_write"    />
+        <result property="tabsReadWrite" column="tabs_read_write"    />
+        <result property="tabsDescribe" column="tabs_describe"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <resultMap type="com.ruoyi.devices.domain.product.ProductEvent" id="ProductEventResult">
+        <result property="eventId"      column="event_id"    />
+        <result property="eventAlias"   column="event_alias"    />
+        <result property="eventName"    column="event_name"    />
+        <result property="eventLevel"    column="event_level"    />
+        <result property="eventOut"    column="event_out"    />
+        <result property="eventConfig"    column="event_config"    />
+        <result property="eventDecribe" column="event_decribe"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <resultMap type="com.ruoyi.devices.domain.product.ProductPower" id="ProductPowerResult">
+        <result property="powerId"      column="power_id"    />
+        <result property="powerAlias"   column="power_alias"    />
+        <result property="powerName"    column="power_name"    />
+        <result property="powerAsync"    column="power_async"    />
+        <result property="powerOut"    column="power_out"    />
+        <result property="powerInput"    column="power_input"    />
+        <result property="powerDecribe" column="power_decribe"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <resultMap type="com.ruoyi.devices.domain.product.ProductAttribute" id="AttributeResult">
+        <result property="attributeId"      column="attribute_id"    />
+        <result property="attributeAlias"   column="attribute_alias"    />
+        <result property="attributeName"    column="attribute_name"    />
+        <result property="attributeType"    column="attribute_type"    />
+        <result property="attributeUnit"    column="attribute_unit"    />
+        <result property="attributeSource"    column="attribute_source"    />
+        <result property="attributeDecribe" column="attribute_decribe"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+
+    <sql id="selectProductVo">
+        select product_id, product_sort, product_name, order_num, descripe, status, del_flag, create_by, create_time, update_by, update_time from product
+    </sql>
+
+    <select id="selectProductList" parameterType="com.ruoyi.devices.domain.product.Product" resultMap="ProductResult">
+        <include refid="selectProductVo"/>
+        <where>
+            <if test="productSort != null  and productSort != ''"> and product_sort = #{productSort}</if>
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="orderNum != null "> and order_num = #{orderNum}</if>
+            <if test="descripe != null  and descripe != ''"> and descripe = #{descripe}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+        order by order_num asc
+    </select>
+
+    <select id="selectProductByProductId" parameterType="Long" resultMap="ProductResult">
+        <include refid="selectProductVo"/>
+        where product_id = #{productId}
+    </select>
+
+    <insert id="insertProduct" parameterType="com.ruoyi.devices.domain.product.Product" useGeneratedKeys="true" keyProperty="productId">
+        insert into product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productSort != null">product_sort,</if>
+            <if test="productName != null">product_name,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="descripe != null">descripe,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productSort != null">#{productSort},</if>
+            <if test="productName != null">#{productName},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="descripe != null">#{descripe},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProduct" parameterType="com.ruoyi.devices.domain.product.Product">
+        update product
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productSort != null">product_sort = #{productSort},</if>
+            <if test="productName != null">product_name = #{productName},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="descripe != null">descripe = #{descripe},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where product_id = #{productId}
+    </update>
+
+    <delete id="deleteProductByProductId" parameterType="Long">
+        delete from product where product_id = #{productId}
+    </delete>
+
+    <delete id="deleteProductByProductIds" parameterType="String">
+        delete from product where product_id in
+        <foreach item="productId" collection="array" open="(" separator="," close=")">
+            #{productId}
+        </foreach>
+    </delete>
+
+    <select id="selectDeviceCountByProductName" parameterType="String" resultType="Integer">
+            select count(1) from device1 where device1.device_productName = #{productName}
+    </select>
+
+
+<!--    产品标签   -->
+    <sql id="selectTabsVo">
+        select tabs_id, tabs_name, tabs_alias, tabs_type, tabs_decribe, tabs_read, tabs_write, tabs_read_write, create_by, create_time, update_by, update_time from product_tabs
+    </sql>
+
+    <select id="selecttabsList" parameterType="com.ruoyi.devices.domain.product.ProductTabs" resultMap="ProductTabsResult">
+        <include refid="selectTabsVo"/>
+        <where>
+            <if test="tabsName != null  and tabsName != ''"> and tabs_name = #{tabsName}</if>
+        </where>
+        order by tabs_id asc
+    </select>
+
+    <select id="selectTabsByTabsName" parameterType="String" resultMap="ProductTabsResult">
+        <include refid="selectTabsVo"/>
+            where tabs_name = #{tabsName}
+    </select>
+
+    <insert id="insertTabs" parameterType="com.ruoyi.devices.domain.product.ProductTabs" useGeneratedKeys="true" keyProperty="tabsId">
+        insert into product_tabs
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tabsName != null">tabs_name,</if>
+            <if test="tabsAlias != null">tabs_alias,</if>
+            <if test="tabsType != null">tabs_type,</if>
+            <if test="tabsDecribe != null">tabs_decribe,</if>
+            <if test="tabsRead != null">tabs_read,</if>
+            <if test="tabsWrite != null">tabs_write,</if>
+            <if test="tabsReadWrite != null">tabs_read_write,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tabsName != null">#{tabsName},</if>
+            <if test="tabsAlias != null">#{tabsAlias},</if>
+            <if test="tabsType != null">#{tabsType},</if>
+            <if test="tabsDecribe != null">#{tabsDecribe},</if>
+            <if test="tabsRead != null">#{tabsRead},</if>
+            <if test="tabsWrite != null">#{tabsWrite},</if>
+            <if test="tabsReadWrite != null">#{tabsReadWrite},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTabs" parameterType="com.ruoyi.devices.domain.product.ProductTabs">
+        update product_tabs
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="tabsName != null">tabs_name = #{tabsName},</if>
+            <if test="tabsAlias != null">tabs_alias = #{tabsAlias},</if>
+            <if test="tabsType != null">tabs_type = #{tabsType},</if>
+            <if test="tabsDecribe != null">tabs_decribe = #{tabsDecribe},</if>
+            <if test="tabsRead != null">tabs_read = #{tabsRead},</if>
+            <if test="tabsWrite != null">tabs_write = #{tabsWrite},</if>
+            <if test="tabsReadWrite != null">tabs_read_write = #{tabsReadWrite},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where tabs_id = #{tabsId}
+    </update>
+
+    <delete id="deleteTabsByTabsId" parameterType="Long">
+        delete from product_tabs where tabs_id = #{tabsId}
+    </delete>
+
+    <delete id="deleteTabsByTabsIds" parameterType="String">
+        delete from product_tabs where tabs_id in
+        <foreach item="tabsId" collection="array" open="(" separator="," close=")">
+            #{tabsId}
+        </foreach>
+    </delete>
+
+
+<!--    产品属性    -->
+    <sql id="selectAttributeVo">
+        select attribute_id, attribute_name, attribute_alias, attribute_source, attribute_decribe, attribute_type, attribute_unit, create_by, create_time, update_by, update_time from product_attribute
+    </sql>
+    <select id="selectAttributeList" parameterType="com.ruoyi.devices.domain.product.ProductAttribute" resultMap="AttributeResult">
+        <include refid="selectAttributeVo"/>
+        <where>
+            <if test="attributeName != null  and attributeName != ''"> and attribute_name = #{attributeName}</if>
+        </where>
+        order by attribute_id asc
+    </select>
+
+    <select id="selectAttributeByAttributeName" parameterType="String" resultMap="AttributeResult">
+        <include refid="selectAttributeVo"/>
+        where attribute_name = #{attributeName}
+    </select>
+
+    <insert id="insertAttribute" parameterType="com.ruoyi.devices.domain.product.ProductAttribute" useGeneratedKeys="true" keyProperty="attributeId">
+        insert into product_attribute
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="attributeName != null">attribute_name,</if>
+            <if test="attributeAlias != null">attribute_alias,</if>
+            <if test="attributeSource != null">attribute_source,</if>
+            <if test="attributeDecribe != null">attribute_decribe,</if>
+            <if test="attributeType != null">attribute_type,</if>
+            <if test="attributeUnit != null">attribute_unit,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="attributeName != null">#{attributeName},</if>
+            <if test="attributeAlias != null">#{attributeAlias},</if>
+            <if test="attributeSource != null">#{attributeSource},</if>
+            <if test="attributeDecribe != null">#{attributeDecribe},</if>
+            <if test="attributeType != null">#{attributeType},</if>
+            <if test="attributeUnit != null">#{attributeUnit},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAttribute" parameterType="com.ruoyi.devices.domain.product.ProductAttribute">
+        update product_attribute
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="attributeName != null">attribute_name = #{attributeName},</if>
+            <if test="attributeAlias != null">attribute_alias = #{attributeAlias},</if>
+            <if test="attributeSource != null">attribute_source = #{attributeSource},</if>
+            <if test="attributeDecribe != null">attribute_decribe = #{attributeDecribe},</if>
+            <if test="attributeType != null">attribute_type = #{attributeType},</if>
+            <if test="attributeUnit != null">attribute_unit = #{attributeUnit},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where attribute_id = #{attributeId}
+    </update>
+
+    <delete id="deleteAttributeByAttributeId" parameterType="Long">
+        delete from product_attribute where attribute_id = #{attributeId}
+    </delete>
+
+    <delete id="deleteAttributeByAttributeIds" parameterType="String">
+        delete from product_attribute where attribute_id in
+        <foreach item="attributeId" collection="array" open="(" separator="," close=")">
+            #{attributeId}
+        </foreach>
+    </delete>
+
+
+<!--    产品事件    -->
+    <sql id="selectEventVo">
+        select event_id, event_name, event_alias, event_decribe, event_level, event_out, create_by, create_time, update_by, update_time from product_event
+    </sql>
+
+    <select id="selectEventList" parameterType="com.ruoyi.devices.domain.product.ProductEvent" resultMap="ProductEventResult">
+        <include refid="selectEventVo"/>
+        <where>
+            <if test="eventName != null  and eventName != ''"> and event_name = #{eventName}</if>
+        </where>
+        order by event_id asc
+    </select>
+
+    <select id="selectEventByEventName" parameterType="String" resultMap="ProductEventResult">
+        <include refid="selectEventVo"/>
+        where event_name   = #{eventName}
+    </select>
+
+    <insert id="insertEvent" parameterType="com.ruoyi.devices.domain.product.ProductEvent" useGeneratedKeys="true" keyProperty="eventId">
+        insert into product_event
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="eventName != null">event_name,</if>
+            <if test="eventAlias != null">event_alias,</if>
+            <if test="eventDecribe != null">event_decribe,</if>
+            <if test="eventLevel != null">event_level,</if>
+            <if test="eventOut != null">event_out,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="eventName != null">#{eventName},</if>
+            <if test="eventAlias != null">#{eventAlias},</if>
+            <if test="eventDecribe != null">#{eventDecribe},</if>
+            <if test="eventLevel != null">#{eventLevel},</if>
+            <if test="eventOut != null">#{eventOut},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateEvent" parameterType="com.ruoyi.devices.domain.product.ProductEvent">
+        update product_event
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="eventName != null">event_name = #{eventName},</if>
+            <if test="eventAlias != null">event_alias = #{eventAlias},</if>
+            <if test="eventDecribe != null">event_decribe = #{eventDecribe},</if>
+            <if test="eventLevel != null">event_level = #{eventLevel},</if>
+            <if test="eventOut != null">event_out = #{eventOut},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where event_id = #{eventId}
+    </update>
+
+    <delete id="deleteEventByEventId" parameterType="Long">
+        delete from product_event where event_id = #{eventId}
+    </delete>
+
+    <delete id="deleteEventByEventIds" parameterType="String">
+        delete from product_event where event_id in
+        <foreach item="eventId" collection="array" open="(" separator="," close=")">
+            #{eventId}
+        </foreach>
+    </delete>
+
+<!--    产品功能    -->
+    <sql id="selectPowerVo">
+        select power_id, power_name, power_alias, power_decribe, power_async, power_input, power_out, create_by, create_time, update_by, update_time from product_power
+    </sql>
+
+    <select id="selectPowerList" parameterType="com.ruoyi.devices.domain.product.ProductPower" resultMap="ProductPowerResult">
+        <include refid="selectPowerVo"/>
+        <where>
+            <if test="powerName != null  and powerName != ''"> and power_name = #{powerName}</if>
+        </where>
+    </select>
+
+    <select id="selectPowerByPowerId" parameterType="Long" resultMap="ProductPowerResult">
+        <include refid="selectPowerVo"/>
+        where power_id = #{powerId}
+    </select>
+
+    <insert id="insertPower" parameterType="com.ruoyi.devices.domain.product.ProductPower" useGeneratedKeys="true" keyProperty="powerId">
+        insert into product_power
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="powerName != null">power_name,</if>
+            <if test="powerAlias != null">power_alias,</if>
+            <if test="powerDecribe != null">power_decribe,</if>
+            <if test="powerAsync != null">power_async,</if>
+            <if test="powerInput != null">power_input,</if>
+            <if test="powerOut != null">power_out,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="powerName != null">#{powerName},</if>
+            <if test="powerAlias != null">#{powerAlias},</if>
+            <if test="powerDecribe != null">#{powerDecribe},</if>
+            <if test="powerAsync != null">#{powerAsync},</if>
+            <if test="powerInput != null">#{powerInput},</if>
+            <if test="powerOut != null">#{powerOut},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updatePower" parameterType="com.ruoyi.devices.domain.product.ProductPower">
+        update product_power
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="powerName != null">power_name = #{powerName},</if>
+            <if test="powerAlias != null">power_alias = #{powerAlias},</if>
+            <if test="powerDecribe != null">power_decribe = #{powerDecribe},</if>
+            <if test="powerAsync != null">power_async = #{powerAsync},</if>
+            <if test="powerInput != null">power_input = #{powerInput},</if>
+            <if test="powerOut != null">power_out = #{powerOut},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where power_id = #{powerId}
+    </update>
+
+    <delete id="deletePowerByPowerId" parameterType="Long">
+        delete from product_power where power_id = #{powerId}
+    </delete>
+
+    <delete id="deletePowerByPowerIds" parameterType="String">
+        delete from product_power where power_id in
+        <foreach item="powerId" collection="array" open="(" separator="," close=")">
+            #{powerId}
+        </foreach>
+    </delete>
+</mapper>

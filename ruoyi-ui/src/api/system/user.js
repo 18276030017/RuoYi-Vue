@@ -78,6 +78,14 @@ export function getUserProfile() {
   })
 }
 
+// 查询用户个人信息
+export function getUserProfile1() {
+  return request({
+    url: '/system/aed',
+    method: 'get'
+  })
+}
+
 // 修改用户个人信息
 export function updateUserProfile(data) {
   return request({

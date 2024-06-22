@@ -48,10 +48,12 @@ public class CacheController
     @GetMapping()
     public AjaxResult getInfo() throws Exception
     {
+        // 获取Redis服务器的当前信息，包括服务器状态、CPU使用情况、内存使用情况等。
         Properties info = (Properties) redisTemplate.execute((RedisCallback<Object>) connection -> connection.info());
+        // 获取Redis服务器的命令统计信息，例如各种命令的执行次数等。
         Properties commandStats = (Properties) redisTemplate.execute((RedisCallback<Object>) connection -> connection.info("commandstats"));
+        // 获取Redis当前数据库的键数量。
         Object dbSize = redisTemplate.execute((RedisCallback<Object>) connection -> connection.dbSize());
-
         Map<String, Object> result = new HashMap<>(3);
         result.put("info", info);
         result.put("dbSize", dbSize);

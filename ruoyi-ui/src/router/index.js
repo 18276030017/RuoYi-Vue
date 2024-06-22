@@ -161,6 +161,34 @@ export const dynamicRoutes = [
         meta: { title: '修改生成配置', activeMenu: '/tool/gen' }
       }
     ]
+  },
+  {
+    path: '/devices/device-auth',
+    component: Layout,
+    hidden: true,
+    permissions: ['devices:device1:upgrade'],
+    children: [
+      {
+        path: 'upgrade/:deviceCode',
+        component: () => import('@/views/devices/device1/deviceUpgrade'),
+        name: 'DeviceUpgrade',
+        meta: {title: '设备升级', activeMenu: '/devices/device1'}
+      }
+    ]
+  },
+  {
+    path: '/devices/product_auth',
+    component: Layout,
+    hidden: true,
+    permissions: ['devices:product:details'],
+    children: [
+      {
+        path: 'details/:productId',
+        component: () => import('@/views/devices/product/details'),
+        name: 'Details',
+        meta: { title: '产品详情', activeMenu: '/devices/product' }
+      }
+    ]
   }
 ]
 

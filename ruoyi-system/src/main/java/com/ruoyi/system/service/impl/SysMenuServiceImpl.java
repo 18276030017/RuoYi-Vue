@@ -170,18 +170,18 @@ public class SysMenuServiceImpl implements ISysMenuService
             RouterVo router = new RouterVo();
             router.setHidden("1".equals(menu.getVisible()));
             router.setName(getRouteName(menu));
-            router.setPath(getRouterPath(menu));
-            router.setComponent(getComponent(menu));
-            router.setQuery(menu.getQuery());
+            router.setPath(getRouterPath(menu));//获取目录、菜单的路由地址
+            router.setComponent(getComponent(menu));//获取菜单或者目录的组件信息
+            router.setQuery(menu.getQuery());//设置菜单的相关参数到路由中
             router.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon(), StringUtils.equals("1", menu.getIsCache()), menu.getPath()));
             List<SysMenu> cMenus = menu.getChildren();
             if (StringUtils.isNotEmpty(cMenus) && UserConstants.TYPE_DIR.equals(menu.getMenuType()))
             {
                 router.setAlwaysShow(true);
                 router.setRedirect("noRedirect");
-                router.setChildren(buildMenus(cMenus));
+                router.setChildren(buildMenus(cMenus));//再次执行buildMenus方法构建子菜单
             }
-            else if (isMenuFrame(menu))
+            else if (isMenuFrame(menu))  //如果没有子菜单则继续判断该菜单是否为内部跳转的
             {
                 router.setMeta(null);
                 List<RouterVo> childrenList = new ArrayList<RouterVo>();
@@ -196,7 +196,7 @@ public class SysMenuServiceImpl implements ISysMenuService
             }
             else if (menu.getParentId().intValue() == 0 && isInnerLink(menu))
             {
-                router.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon()));
+                router.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon())); //设置内链菜单的信息（返回不是目录的菜单对应菜单名称和图标）
                 router.setPath("/");
                 List<RouterVo> childrenList = new ArrayList<RouterVo>();
                 RouterVo children = new RouterVo();
@@ -224,7 +224,7 @@ public class SysMenuServiceImpl implements ISysMenuService
     {
         List<SysMenu> returnList = new ArrayList<SysMenu>();
         List<Long> tempList = menus.stream().map(SysMenu::getMenuId).collect(Collectors.toList());
-        for (Iterator<SysMenu> iterator = menus.iterator(); iterator.hasNext();)
+        for (Iterator<SysMenu> iterator = menus.iterator(); iterator.hasNext();)//使用迭代器初始化了iterator对象（菜单列表），并通过hasNext()方法来判断是否还有下一个整数可以访问
         {
             SysMenu menu = (SysMenu) iterator.next();
             // 如果是顶级节点, 遍历该父节点的所有子节点
@@ -354,7 +354,7 @@ public class SysMenuServiceImpl implements ISysMenuService
      */
     public String getRouteName(SysMenu menu)
     {
-        String routerName = StringUtils.capitalize(menu.getPath());
+        String routerName = StringUtils.capitalize(menu.getPath());//首字母转大写
         // 非外链并且是一级目录（类型为目录）
         if (isMenuFrame(menu))
         {
@@ -375,15 +375,15 @@ public class SysMenuServiceImpl implements ISysMenuService
         // 内链打开外网方式
         if (menu.getParentId().intValue() != 0 && isInnerLink(menu))
         {
-            routerPath = innerLinkReplaceEach(routerPath);
+            routerPath = innerLinkReplaceEach(routerPath);//获取到的路由地址中若是有特殊字符进行转换查理
         }
-        // 非外链并且是一级目录（类型为目录）
-        if (0 == menu.getParentId().intValue() && UserConstants.TYPE_DIR.equals(menu.getMenuType())
-                && UserConstants.NO_FRAME.equals(menu.getIsFrame()))
+        // 非外链并且是一级目录（类型为目录），比如说若依系统中的系统管理就是一级目录且类型是目录
+        if (0 == menu.getParentId().intValue() && UserConstants.TYPE_DIR.equals(menu.getMenuType())//该菜单类型是一个目录且是一级目录
+                && UserConstants.NO_FRAME.equals(menu.getIsFrame())) //并非外链菜单，即属于父子联动菜单
         {
             routerPath = "/" + menu.getPath();
         }
-        // 非外链并且是一级目录（类型为菜单）
+        // 非外链并且是一级目录（类型为菜单），比如说若依系统中的若依官网就是一级目录且类型是菜单
         else if (isMenuFrame(menu))
         {
             routerPath = "/";
@@ -400,11 +400,11 @@ public class SysMenuServiceImpl implements ISysMenuService
     public String getComponent(SysMenu menu)
     {
         String component = UserConstants.LAYOUT;
-        if (StringUtils.isNotEmpty(menu.getComponent()) && !isMenuFrame(menu))
+        if (StringUtils.isNotEmpty(menu.getComponent()) && !isMenuFrame(menu))   //判断组件路径以及菜单是否为外链
         {
             component = menu.getComponent();
         }
-        else if (StringUtils.isEmpty(menu.getComponent()) && menu.getParentId().intValue() != 0 && isInnerLink(menu))
+        else if (StringUtils.isEmpty(menu.getComponent()) && menu.getParentId().intValue() != 0 && isInnerLink(menu))  //组件路径是空且不是根目录并且对菜单是否为
         {
             component = UserConstants.INNER_LINK;
         }

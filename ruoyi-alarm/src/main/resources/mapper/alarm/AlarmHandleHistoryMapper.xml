@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.alarm.mapper.AlarmHandleHistoryMapper">
+    
+    <resultMap type="AlarmHandleHistory" id="AlarmHandleHistoryResult">
+        <result property="id"    column="id"    />
+        <result property="alarmId"    column="alarm_id"    />
+        <result property="level"    column="level"    />
+        <result property="alarmName"    column="alarm_name"    />
+        <result property="sceneName"    column="scene_name"    />
+        <result property="alarmTime"    column="alarm_time"    />
+        <result property="handleType"    column="handle_type"    />
+        <result property="description"    column="description"    />
+        <result property="handleTime"    column="handle_time"    />
+        <result property="userName"    column="user_name"    />
+    </resultMap>
+
+    <sql id="selectAlarmHandleHistoryVo">
+        select id, alarm_id, level, alarm_name, scene_name, alarm_time, handle_type, description, handle_time, user_name from alarm_handle_history
+    </sql>
+
+    <select id="selectAlarmHandleHistoryList" parameterType="AlarmHandleHistory" resultMap="AlarmHandleHistoryResult">
+        <include refid="selectAlarmHandleHistoryVo"/>
+        <where>  
+            <if test="alarmId != null  and alarmId != ''"> and alarm_id = #{alarmId}</if>
+            <if test="level != null "> and level = #{level}</if>
+            <if test="alarmName != null  and alarmName != ''"> and alarm_name like concat('%', #{alarmName}, '%')</if>
+            <if test="sceneName != null  and sceneName != ''"> and scene_name like concat('%', #{sceneName}, '%')</if>
+            <if test="alarmTime != null "> and alarm_time = #{alarmTime}</if>
+            <if test="handleType != null  and handleType != ''"> and handle_type = #{handleType}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="handleTime != null "> and handle_time = #{handleTime}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectAlarmHandleHistoryById" parameterType="Long" resultMap="AlarmHandleHistoryResult">
+        <include refid="selectAlarmHandleHistoryVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAlarmHandleHistory" parameterType="AlarmHandleHistory" useGeneratedKeys="true" keyProperty="id">
+        insert into alarm_handle_history
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="alarmId != null and alarmId != ''">alarm_id,</if>
+            <if test="level != null">level,</if>
+            <if test="alarmName != null and alarmName != ''">alarm_name,</if>
+            <if test="sceneName != null and sceneName != ''">scene_name,</if>
+            <if test="alarmTime != null">alarm_time,</if>
+            <if test="handleType != null and handleType != ''">handle_type,</if>
+            <if test="description != null and description != ''">description,</if>
+            <if test="handleTime != null">handle_time,</if>
+            <if test="userName != null">user_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="alarmId != null and alarmId != ''">#{alarmId},</if>
+            <if test="level != null">#{level},</if>
+            <if test="alarmName != null and alarmName != ''">#{alarmName},</if>
+            <if test="sceneName != null and sceneName != ''">#{sceneName},</if>
+            <if test="alarmTime != null">#{alarmTime},</if>
+            <if test="handleType != null and handleType != ''">#{handleType},</if>
+            <if test="description != null and description != ''">#{description},</if>
+            <if test="handleTime != null">#{handleTime},</if>
+            <if test="userName != null">#{userName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAlarmHandleHistory" parameterType="AlarmHandleHistory">
+        update alarm_handle_history
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="alarmId != null and alarmId != ''">alarm_id = #{alarmId},</if>
+            <if test="level != null">level = #{level},</if>
+            <if test="alarmName != null and alarmName != ''">alarm_name = #{alarmName},</if>
+            <if test="sceneName != null and sceneName != ''">scene_name = #{sceneName},</if>
+            <if test="alarmTime != null">alarm_time = #{alarmTime},</if>
+            <if test="handleType != null and handleType != ''">handle_type = #{handleType},</if>
+            <if test="description != null and description != ''">description = #{description},</if>
+            <if test="handleTime != null">handle_time = #{handleTime},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAlarmHandleHistoryById" parameterType="Long">
+        delete from alarm_handle_history where id = #{id}
+    </delete>
+
+    <delete id="deleteAlarmHandleHistoryByIds" parameterType="String">
+        delete from alarm_handle_history where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

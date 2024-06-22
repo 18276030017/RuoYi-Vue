@@ -6,10 +6,10 @@
 </template>
 
 <script>
-import ThemePicker from "@/components/ThemePicker";
+import ThemePicker from '@/components/ThemePicker'
 
 export default {
-  name: "App",
+  name: 'App',
   components: { ThemePicker },
   metaInfo() {
     return {
@@ -19,7 +19,7 @@ export default {
       }
     }
   }
-};
+}
 </script>
 <style scoped>
 #app .theme-picker {

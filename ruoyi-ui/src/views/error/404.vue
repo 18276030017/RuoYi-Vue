@@ -21,18 +21,28 @@
           返回首页
         </router-link>
       </div>
+      <iframe :src="src" frameborder="0" style="width: 100%;height: 100%;" />
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
   name: 'Page404',
+  data() {
+    return {
+      showSessionId: '',
+      src: ''
+    }
+  },
   computed: {
     message() {
       return '找不到网页！'
     }
+  },
+  mounted() {
+    this.showSessionId = window.location.search
+    this.src = 'ruoyi-ui/src/views/system/notice/index.vue${this.showSessionId}'
   }
 }
 </script>

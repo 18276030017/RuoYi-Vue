@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.devices.mapper.UpgradeMapper">
+
+    <resultMap type="DeviceUpgrade" id="DeviceUpgradeResult">
+        <result property="deviceCode"    column="deviceCode"    />
+        <result property="upgradeId"    column="upgrade_id"    />
+        <result property="upgradeVersion"    column="upgrade_version"    />
+        <result property="upgradeName"    column="upgrade_name"    />
+        <result property="upgradeUrl"    column="upgrade_url"    />
+        <result property="upgradeDesc"    column="upgrade_desc"    />
+        <result property="upgradeTitle"    column="upgrade_title"    />
+        <result property="upgradeStatus"    column="upgrade_status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="upgradeSize"    column="upgradeSize"    />
+    </resultMap>
+
+    <sql id="selectDeviceUpgradeVo">
+        select u.upgrade_id, u.upgrade_version, u.upgrade_name, u.upgrade_url, u.upgrade_desc, u.upgrade_title, u.upgrade_status, u.create_by, u.create_time, u.update_by, u.update_time, u.del_flag, u.upgradeSize, u.deviceCode from device_upgrade u
+    </sql>
+
+    <select id="selectUpgradeList" parameterType="DeviceUpgrade" resultMap="DeviceUpgradeResult">
+        <include refid="selectDeviceUpgradeVo"/>
+        left join device1 d on d.device_code = u.deviceCode
+        <where>
+            <if test="upgradeVersion != null  and upgradeVersion != ''"> and u.upgrade_version = #{upgradeVersion}</if>
+            <if test="upgradeName != null  and upgradeName != ''"> and u.upgrade_name like concat('%', #{upgradeName}, '%')</if>
+            <if test="upgradeUrl != null  and upgradeUrl != ''"> and u.upgrade_url = #{upgradeUrl}</if>
+            <if test="upgradeDesc != null  and upgradeDesc != ''"> and u.upgrade_desc = #{upgradeDesc}</if>
+            <if test="upgradeTitle != null  and upgradeTitle != ''"> and u.upgrade_title like concat('%', #{upgradeTitle}, '%')</if>
+            <if test="upgradeStatus != null  and upgradeStatus != ''"> and u.upgrade_status = #{upgradeStatus}</if>
+            <if test="upgradeSize != null  and upgradeSize != ''"> and u.upgradeSize = #{upgradeSize}</if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND date_format(u.create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND date_format(u.create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+            <if test="deviceCode != null and deviceCode != ''">
+                and u.deviceCode = #{deviceCode}
+            </if>
+        </where>
+        order by u.create_time desc
+    </select>
+
+    <select id="selectDeviceUpgradeByUpgradeId" parameterType="Long" resultMap="DeviceUpgradeResult">
+        <include refid="selectDeviceUpgradeVo"/>
+        where upgrade_id = #{upgradeId}
+    </select>
+
+    <insert id="insertUpgrade" parameterType="DeviceUpgrade" useGeneratedKeys="true" keyProperty="upgradeId">
+        insert into device_upgrade
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="upgradeVersion != null and upgradeVersion != ''">upgrade_version,</if>
+            <if test="upgradeName != null and upgradeName != ''">upgrade_name,</if>
+            <if test="upgradeUrl != null and upgradeUrl != ''">upgrade_url,</if>
+            <if test="upgradeDesc != null and upgradeDesc != ''">upgrade_desc,</if>
+            <if test="upgradeTitle != null">upgrade_title,</if>
+            <if test="upgradeStatus != null">upgrade_status,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="upgradeSize != null">upgradeSize,</if>
+            <if test="deviceCode != null and deviceCode != ''">deviceCode,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="upgradeVersion != null and upgradeVersion != ''">#{upgradeVersion},</if>
+            <if test="upgradeName != null and upgradeName != ''">#{upgradeName},</if>
+            <if test="upgradeUrl != null and upgradeUrl != ''">#{upgradeUrl},</if>
+            <if test="upgradeDesc != null and upgradeDesc != ''">#{upgradeDesc},</if>
+            <if test="upgradeTitle != null">#{upgradeTitle},</if>
+            <if test="upgradeStatus != null">#{upgradeStatus},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="upgradeSize != null">#{upgradeSize},</if>
+            <if test="deviceCode != null and deviceCode != ''">#{deviceCode},</if>
+        </trim>
+    </insert>
+
+    <update id="updateUpgrade" parameterType="DeviceUpgrade">
+        update device_upgrade
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="upgradeVersion != null and upgradeVersion != ''">upgrade_version = #{upgradeVersion},</if>
+            <if test="upgradeName != null and upgradeName != ''">upgrade_name = #{upgradeName},</if>
+            <if test="upgradeUrl != null and upgradeUrl != ''">upgrade_url = #{upgradeUrl},</if>
+            <if test="upgradeDesc != null and upgradeDesc != ''">upgrade_desc = #{upgradeDesc},</if>
+            <if test="upgradeTitle != null">upgrade_title = #{upgradeTitle},</if>
+            <if test="upgradeStatus != null">upgrade_status = #{upgradeStatus},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="upgradeSize != null">upgradeSize = #{upgradeSize},</if>
+            <if test="deviceCode != null and deviceCode != ''">deviceCode = #{deviceCode},</if>
+        </trim>
+        where upgrade_id = #{upgradeId}
+    </update>
+
+    <delete id="deleteUpgradeById" parameterType="Long">
+        delete from device_upgrade where upgrade_id = #{upgradeId}
+    </delete>
+
+    <delete id="deleteUpgradeByUpgradeIds" parameterType="String">
+        delete from device_upgrade where upgrade_id in
+        <foreach item="upgradeId" collection="array" open="(" separator="," close=")">
+            #{upgradeId}
+        </foreach>
+    </delete>
+</mapper>

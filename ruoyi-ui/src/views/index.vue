@@ -1,40 +1,89 @@
 <template>
   <div class="app-container home">
     <el-row :gutter="20">
+      <el-col :lg="8" :md="12" :sm="24" :xs="24">
+        <el-card class="update-log">
+          <div slot="header" class="clearfix1">
+            <h2 style="font-weight: bold">设备</h2>
+            <span
+              style="display: inline-block; height: 30px; line-height: 30px"
+            >设备总数量：{{ deviceCount }}</span>
+          </div>
+          <div>
+            <DeviceInfo
+              style="font-weight: bold"
+              :rate-value=" offlineDeviceCount "
+              :value=" onlineDeviceCount"
+              :water-value=" maintenanceDeviceCount"
+              label="在线"
+              rate-label="离线"
+              water-label="维护"
+            />
+            <DeviceInfo
+              style="font-weight: bold"
+              :rate-value=" faultDeviceCount "
+              :value=" alarmDeviceCount"
+              :water-value=" lockDeviceCount"
+              label="报警"
+              rate-label="故障"
+              water-label="锁定"
+            />
+            <DeviceInfo
+              style="font-weight: bold"
+              :rate-value="tryDeviceCount "
+              :value="UNACTIVATEDDeviceCount"
+              :water-value="keepDeviceCount"
+              label="未激活"
+              rate-label="试用"
+              water-label="保养"
+            />
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
+    <hr>
+    <el-row :gutter="20">
       <el-col :sm="24" :lg="24">
         <blockquote class="text-warning" style="font-size: 14px">
           领取阿里云通用云产品1888优惠券
-          <br />
+          <br>
           <el-link
             href="https://www.aliyun.com/minisite/goods?userCode=brki8iof"
             type="primary"
             target="_blank"
-            >https://www.aliyun.com/minisite/goods?userCode=brki8iof</el-link
-          >
-          <br />
+          >https://www.aliyun.com/minisite/goods?userCode=brki8iof
+          </el-link>
+          <br>
           领取腾讯云通用云产品2860优惠券
-          <br />
+          <br>
           <el-link
             href="https://cloud.tencent.com/redirect.php?redirect=1025&cps_key=198c8df2ed259157187173bc7f4f32fd&from=console"
             type="primary"
             target="_blank"
-            >https://cloud.tencent.com/redirect.php?redirect=1025&cps_key=198c8df2ed259157187173bc7f4f32fd&from=console</el-link
-          >
-          <br />
+          >https://cloud.tencent.com/redirect.php?redirect=1025&cps_key=198c8df2ed259157187173bc7f4f32fd&from=console
+          </el-link>
+          <br>
           阿里云服务器折扣区
-          <el-link href="http://aly.ruoyi.vip" type="primary" target="_blank"
-            >>☛☛点我进入☚☚</el-link
-          >
+          <el-link
+            href="http://aly.ruoyi.vip"
+            target="_blank"
+            type="primary"
+          >>☛☛点我进入☚☚
+          </el-link>
           &nbsp;&nbsp;&nbsp; 腾讯云服务器秒杀区
-          <el-link href="http://txy.ruoyi.vip" type="primary" target="_blank"
-            >>☛☛点我进入☚☚</el-link
-          ><br />
+          <el-link
+            href="http://txy.ruoyi.vip"
+            target="_blank"
+            type="primary"
+          >>☛☛点我进入☚☚
+          </el-link>
+          <br>
           <h4 class="text-danger">
             云产品通用红包，可叠加官网常规优惠使用。(仅限新用户)
           </h4>
         </blockquote>
 
-        <hr />
+        <hr>
       </el-col>
     </el-row>
     <el-row :gutter="20">
@@ -56,15 +105,15 @@
             icon="el-icon-cloudy"
             plain
             @click="goTarget('https://gitee.com/y_project/RuoYi-Vue')"
-            >访问码云</el-button
-          >
+          >访问码云
+          </el-button>
           <el-button
             size="mini"
             icon="el-icon-s-home"
             plain
             @click="goTarget('http://ruoyi.vip')"
-            >访问主页</el-button
-          >
+          >访问主页
+          </el-button>
         </p>
       </el-col>
 
@@ -111,32 +160,31 @@
           </div>
           <div class="body">
             <p>
-              <i class="el-icon-s-promotion"></i> 官网：<el-link
+              <i class="el-icon-s-promotion" /> 官网：
+              <el-link
                 href="http://www.ruoyi.vip"
                 target="_blank"
-                >http://www.ruoyi.vip</el-link
-              >
+              >http://www.ruoyi.vip
+              </el-link>
             </p>
             <p>
-              <i class="el-icon-user-solid"></i> QQ群：<s> 满937441 </s> <s> 满887144332 </s>
+              <i class="el-icon-user-solid" /> QQ群：<s> 满937441 </s> <s> 满887144332 </s>
               <s> 满180251782 </s> <s> 满104180207 </s> <s> 满186866453 </s> <s> 满201396349 </s>
-              <s> 满101456076 </s> <s> 满101539465 </s> <s> 满264312783 </s> <s> 满167385320 </s> 
-              <s> 满104748341 </s> <s> 满160110482 </s> <s> 满170801498 </s> <s> 满108482800 </s> 
-              <s> 满101046199 </s> <s> 满136919097 </s> <s> 满143961921 </s> <s> 满174951577 </s> 
+              <s> 满101456076 </s> <s> 满101539465 </s> <s> 满264312783 </s> <s> 满167385320 </s>
+              <s> 满104748341 </s> <s> 满160110482 </s> <s> 满170801498 </s> <s> 满108482800 </s>
+              <s> 满101046199 </s> <s> 满136919097 </s> <s> 满143961921 </s> <s> 满174951577 </s>
               <s> 满161281055 </s> <a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=XIzkm_mV2xTsUtFxo63bmicYoDBA6Ifm&authKey=dDW%2F4qsmw3x9govoZY9w%2FoWAoC4wbHqGal%2BbqLzoS6VBarU8EBptIgPKN%2FviyC8j&noverify=0&group_code=138988063" target="_blank">138988063</a>
             </p>
             <p>
-              <i class="el-icon-chat-dot-round"></i> 微信：<a
+              <i class="el-icon-chat-dot-round" /> 微信：<a
                 href="javascript:;"
-                >/ *若依</a
-              >
+              >/ *若依</a>
             </p>
             <p>
-              <i class="el-icon-money"></i> 支付宝：<a
+              <i class="el-icon-money" /> 支付宝：<a
                 href="javascript:;"
                 class="支付宝信息"
-                >/ *若依</a
-              >
+              >/ *若依</a>
             </p>
           </div>
         </el-card>
@@ -973,10 +1021,10 @@
               src="@/assets/images/pay.png"
               alt="donate"
               width="100%"
-            />
-            <span style="display: inline-block; height: 30px; line-height: 30px"
-              >你可以请作者喝杯咖啡表示鼓励</span
             >
+            <span
+              style="display: inline-block; height: 30px; line-height: 30px"
+            >你可以请作者喝杯咖啡表示鼓励</span>
           </div>
         </el-card>
       </el-col>
@@ -985,20 +1033,70 @@
 </template>
 
 <script>
+import { queryDeviceCount } from '@/api/devices/device/device1'
+import DeviceInfo from './DeviceInfo.vue'
 export default {
-  name: "Index",
+  name: 'Index',
+  components: {
+    DeviceInfo
+  },
   data() {
     return {
       // 版本号
-      version: "3.8.7"
-    };
+      version: '3.8.7',
+      onlineDeviceCount: 0,
+      offlineDeviceCount: 0,
+      deviceCount: 0,
+      alarmDeviceCount: 0,
+      lockDeviceCount: 0,
+      faultDeviceCount: 0,
+      maintenanceDeviceCount: 0,
+      tryDeviceCount: 0,
+      UNACTIVATEDDeviceCount: 0,
+      keepDeviceCount: 0,
+      refreshInterval: null
+    }
+  },
+  mounted() {
+    this.queryDeviceCount()
+    this.startRefresh()
+  },
+  beforeDestroy() {
+    this.stopRefresh()
   },
   methods: {
     goTarget(href) {
-      window.open(href, "_blank");
+      window.open(href, '_blank')
+    },
+    queryDeviceCount() {
+      queryDeviceCount().then(response => {
+        console.log(response)
+        this.deviceCount = response.TOTAL
+        this.onlineDeviceCount = response.ONLINE
+        this.offlineDeviceCount = response.OFFLINE
+        this.alarmDeviceCount = response.ALARM
+        this.lockDeviceCount = response.LOCK
+        this.faultDeviceCount = response.FAULT
+        this.maintenanceDeviceCount = response.MAINTENANCE
+        this.tryDeviceCount = response.TRY
+        this.UNACTIVATEDDeviceCount = response.UNACTIVATED
+        this.keepDeviceCount = response.KEEP
+      })
+    },
+    startRefresh() {
+      this.stopRefresh()
+      this.refreshInterval = setInterval(() => {
+        this.queryDeviceCount()
+      }, 10000)
+    },
+    stopRefresh() {
+      if (this.refreshInterval) {
+        clearInterval(this.refreshInterval)
+        this.refreshInterval = null
+      }
     }
   }
-};
+}
 </script>
 
 <style scoped lang="scss">
@@ -1061,6 +1159,17 @@ export default {
       margin-inline-end: 0;
       padding-inline-start: 40px;
     }
+  }
+
+  .clearfix1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .body1 {
+    display: flex;
+    justify-content: space-between;
   }
 }
 </style>

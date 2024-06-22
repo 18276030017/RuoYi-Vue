@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.devices.mapper.Device1Mapper">
+
+    <resultMap type="com.ruoyi.devices.domain.device.Device1" id="Device1Result">
+        <result property="deviceId"    column="device_id"    />
+        <result property="deviceImage"    column="device_image"    />
+        <result property="deviceCode"    column="device_code"    />
+        <result property="deviceName"    column="device_name"    />
+        <result property="deviceProductName"    column="device_productName"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="leader"    column="leader"    />
+        <result property="phone"    column="phone"    />
+        <result property="email"    column="email"    />
+        <result property="descripe"    column="descripe"    />
+        <result property="deviceStatus"    column="status"    />
+        <result property="channelId"    column="channelId"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="offTime"    column="offtime"    />
+        <result property="deviceCommand"    column="deviceCommand"    />
+        <result property="lastOnlineTime"    column="lastOnlineTime"    />
+        <result property="productKey"    column="productKey"    />
+        <result property="newOnlineTime"    column="newOnlineTime"    />
+        <result property="accessToken"    column="accessToken"    />
+        <result property="devicePort"    column="device_port"    />
+        <result property="deviceSecret"    column="deviceSecret"    />
+        <result property="firmwareVersion"    column="firmwareVersion"    />
+        <result property="deviceType"    column="device_type"    />
+        <result property="deviceIP"    column="device_IP"    />
+        <result property="firmwareFileUrl"    column="firmware_file"    />
+        <result property="deviceModel"    column="device_model"    />
+    </resultMap>
+
+    <sql id="selectDevice1Vo">
+        select device_id, device_image, device_code, device_name, device_productName, order_num, leader, phone, email, descripe, status, channelId, del_flag, create_by, create_time, update_by, update_time, offtime, deviceCommand, lastOnlineTime, productKey, newOnlineTime, accessToken, device_port, deviceSecret, firmwareVersion, device_type, device_IP, firmware_file, device_model from device1
+    </sql>
+
+    <select id="selectDevice1List" parameterType="Device1" resultMap="Device1Result">
+        <include refid="selectDevice1Vo"/>
+        <where>
+            <if test="deviceImage != null  and deviceImage != ''"> and device_image = #{deviceImage}</if>
+            <if test="deviceCode != null  and deviceCode != ''"> and device_code = #{deviceCode}</if>
+            <if test="deviceName != null  and deviceName != ''"> and device_name like concat('%', #{deviceName}, '%')</if>
+            <if test="deviceProductName != null  and deviceProductName != ''"> and device_productName like concat('%', #{deviceProductName}, '%')</if>
+            <if test="orderNum != null "> and order_num = #{orderNum}</if>
+            <if test="leader != null  and leader != ''"> and leader = #{leader}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="email != null  and email != ''"> and email = #{email}</if>
+            <if test="descripe != null  and descripe != ''"> and descripe = #{descripe}</if>
+            <if test="deviceStatus != null  and deviceStatus != ''"> and status = #{deviceStatus}</if>
+            <if test="channelId != null  and channelId != ''"> and channelId = #{channelId}</if>
+            <if test="offTime != null  and offTime != ''"> and offtime = #{offTime}</if>
+            <if test="deviceCommand != null  and deviceCommand != ''"> and deviceCommand = #{deviceCommand}</if>
+            <if test="lastOnlineTime != null "> and lastOnlineTime = #{lastOnlineTime}</if>
+            <if test="productKey != null  and productKey != ''"> and productKey = #{productKey}</if>
+            <if test="newOnlineTime != null "> and newOnlineTime = #{newOnlineTime}</if>
+            <if test="accessToken != null  and accessToken != ''"> and accessToken = #{accessToken}</if>
+            <if test="devicePort != null  and devicePort != ''"> and device_port = #{devicePort}</if>
+            <if test="deviceSecret != null  and deviceSecret != ''"> and deviceSecret = #{deviceSecret}</if>
+            <if test="firmwareVersion != null  and firmwareVersion != ''"> and firmwareVersion = #{firmwareVersion}</if>
+            <if test="deviceType != null  and deviceType != ''"> and device_type = #{deviceType}</if>
+            <if test="deviceIP != null  and deviceIP != ''"> and device_IP = #{deviceIP}</if>
+            <if test="firmwareFileUrl != null  and firmwareFileUrl != ''"> and firmware_file = #{firmwareFileUrl}</if>
+            <if test="deviceModel != null  and deviceModel != ''"> and device_model = #{deviceModel}</if>
+        </where>
+        order by order_num asc
+    </select>
+
+    <select id="selectDevice1ByDeviceCode" parameterType="String" resultMap="Device1Result">
+        <include refid="selectDevice1Vo"/>
+        where device_code = #{deviceCode}
+    </select>
+
+    <insert id="insertDevice1" parameterType="com.ruoyi.devices.domain.device.Device1" useGeneratedKeys="true" keyProperty="deviceId">
+        insert into device1
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null">device_id,</if>
+            <if test="deviceImage != null">device_image,</if>
+            <if test="deviceCode != null">device_code,</if>
+            <if test="deviceName != null">device_name,</if>
+            <if test="deviceProductName != null">device_productName,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="leader != null">leader,</if>
+            <if test="phone != null">phone,</if>
+            <if test="email != null">email,</if>
+            <if test="descripe != null">descripe,</if>
+            <if test="deviceStatus != null">status,</if>
+            <if test="channelId != null">channelId,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="offTime != null">offtime,</if>
+            <if test="deviceCommand != null">deviceCommand,</if>
+            <if test="lastOnlineTime != null">lastOnlineTime,</if>
+            <if test="productKey != null">productKey,</if>
+            <if test="newOnlineTime != null">newOnlineTime,</if>
+            <if test="accessToken != null">accessToken,</if>
+            <if test="devicePort != null">device_port,</if>
+            <if test="deviceSecret != null">deviceSecret,</if>
+            <if test="firmwareVersion != null">firmwareVersion,</if>
+            <if test="deviceType != null">device_type,</if>
+            <if test="deviceIP != null">device_IP,</if>
+            <if test="firmwareFileUrl != null">firmware_file,</if>
+            <if test="deviceModel != null">device_model</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null">#{deviceId},</if>
+            <if test="deviceImage != null">#{deviceImage},</if>
+            <if test="deviceCode != null">#{deviceCode},</if>
+            <if test="deviceName != null">#{deviceName},</if>
+            <if test="deviceProductName != null">#{deviceProductName},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="leader != null">#{leader},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="email != null">#{email},</if>
+            <if test="descripe != null">#{descripe},</if>
+            <if test="deviceStatus != null">#{deviceStatus},</if>
+            <if test="channelId != null">#{channelId},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="offTime != null">#{offTime},</if>
+            <if test="deviceCommand != null">#{deviceCommand},</if>
+            <if test="lastOnlineTime != null">#{lastOnlineTime},</if>
+            <if test="productKey != null">#{productKey},</if>
+            <if test="newOnlineTime != null">#{newOnlineTime},</if>
+            <if test="accessToken != null">#{accessToken},</if>
+            <if test="devicePort != null">#{devicePort},</if>
+            <if test="deviceSecret != null">#{deviceSecret},</if>
+            <if test="firmwareVersion != null">#{firmwareVersion},</if>
+            <if test="deviceType != null">#{deviceType},</if>
+            <if test="deviceIP != null">#{deviceIP},</if>
+            <if test="firmwareFileUrl != null">#{firmwareFileUrl},</if>
+            <if test="deviceModel != null">#{deviceModel}</if>
+        </trim>
+    </insert>
+
+    <update id="updateDevice1" parameterType="com.ruoyi.devices.domain.device.Device1">
+        update device1
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deviceId != null">device_id = #{deviceId},</if>
+            <if test="deviceImage != null">device_image = #{deviceImage},</if>
+            <if test="deviceCode != null">device_code = #{deviceCode},</if>
+            <if test="deviceName != null">device_name = #{deviceName},</if>
+            <if test="deviceProductName != null">device_productName = #{deviceProductName},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="leader != null">leader = #{leader},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="descripe != null">descripe = #{descripe},</if>
+            <if test="deviceStatus != null">status = #{deviceStatus},</if>
+            <if test="channelId != null">channelId = #{channelId},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="offTime != null">offtime = #{offTime},</if>
+            <if test="deviceCommand != null">deviceCommand = #{deviceCommand},</if>
+            <if test="lastOnlineTime != null">lastOnlineTime = #{lastOnlineTime},</if>
+            <if test="productKey != null">productKey = #{productKey},</if>
+            <if test="newOnlineTime != null">newOnlineTime = #{newOnlineTime},</if>
+            <if test="accessToken != null">accessToken = #{accessToken},</if>
+            <if test="devicePort != null">device_port = #{devicePort},</if>
+            <if test="deviceSecret != null">deviceSecret = #{deviceSecret},</if>
+            <if test="firmwareVersion != null">firmwareVersion = #{firmwareVersion},</if>
+            <if test="deviceType != null">device_type = #{deviceType},</if>
+            <if test="deviceIP != null">device_IP = #{deviceIP},</if>
+            <if test="firmwareFileUrl != null">firmware_file = #{firmwareFileUrl},</if>
+            <if test="deviceModel != null">device_model = #{deviceModel}</if>
+        </trim>
+        where device_code = #{deviceCode}
+
+    </update>
+    <update id="updateDevice1ByChannelId" parameterType="com.ruoyi.devices.domain.device.Device1">
+        update device1
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deviceId != null">device_id = #{deviceId},</if>
+            <if test="deviceImage != null">device_image = #{deviceImage},</if>
+            <if test="deviceCode != null">device_code = #{deviceCode},</if>
+            <if test="deviceName != null">device_name = #{deviceName},</if>
+            <if test="deviceProductName != null">device_productName = #{deviceProductName},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="leader != null">leader = #{leader},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="descripe != null">descripe = #{descripe},</if>
+            <if test="deviceStatus != null">status = #{deviceStatus},</if>
+            <if test="channelId != null">channelId = #{channelId},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="offTime != null">offtime = #{offTime},</if>
+            <if test="deviceCommand != null">deviceCommand = #{deviceCommand},</if>
+            <if test="lastOnlineTime != null">lastOnlineTime = #{lastOnlineTime},</if>
+            <if test="productKey != null">productKey = #{productKey},</if>
+            <if test="newOnlineTime != null">newOnlineTime = #{newOnlineTime},</if>
+            <if test="accessToken != null">accessToken = #{accessToken},</if>
+            <if test="devicePort != null">device_port = #{devicePort},</if>
+            <if test="deviceSecret != null">deviceSecret = #{deviceSecret},</if>
+            <if test="firmwareVersion != null">firmwareVersion = #{firmwareVersion},</if>
+            <if test="deviceType != null">device_type = #{deviceType},</if>
+            <if test="deviceIP != null">device_IP = #{deviceIP},</if>
+            <if test="firmwareFileUrl != null">firmware_file = #{firmwareFileUrl},</if>
+            <if test="deviceModel != null">device_model = #{deviceModel}</if>
+        </trim>
+        where ChannelId = #{channelId}
+    </update>
+
+    <delete id="deleteDevice1ByDeviceId" parameterType="String">
+        delete from device1 where device_id = #{deviceId}
+    </delete>
+
+    <delete id="deleteDevice1ByDeviceIds" parameterType="String">
+        delete from device1 where device_id in
+        <foreach item="deviceId" collection="array" open="(" separator="," close=")">
+            #{deviceId}
+        </foreach>
+    </delete>
+
+    <select id="selectDeviceCountByStatus" resultType="java.lang.Integer">
+        <if test="status != 9 and status != null">
+                select count(1) from device1 where status = #{status.value}
+        </if>
+        <if test="status == 9">
+                select count(1) from device1
+        </if>
+    </select>
+
+    <select id="selectOnlineTimestamp" resultMap="Device1Result">
+            select update_time,create_time from device1 where status = 0 and device_id = #{deviceId}
+    </select>
+
+</mapper>

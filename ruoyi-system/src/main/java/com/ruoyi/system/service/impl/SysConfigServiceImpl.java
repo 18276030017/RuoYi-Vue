@@ -64,7 +64,7 @@ public class SysConfigServiceImpl implements ISysConfigService
     @Override
     public String selectConfigByKey(String configKey)
     {
-        String configValue = Convert.toStr(redisCache.getCacheObject(getCacheKey(configKey)));
+        String configValue = Convert.toStr(redisCache.getCacheObject(getCacheKey(configKey)));//getCacheKey方法：设置cache 转换字符串
         if (StringUtils.isNotEmpty(configValue))
         {
             return configValue;
@@ -74,7 +74,7 @@ public class SysConfigServiceImpl implements ISysConfigService
         SysConfig retConfig = configMapper.selectConfig(config);
         if (StringUtils.isNotNull(retConfig))
         {
-            redisCache.setCacheObject(getCacheKey(configKey), retConfig.getConfigValue());
+            redisCache.setCacheObject(getCacheKey(configKey), retConfig.getConfigValue()); //缓存基本对象，将获取到的参数对象通过Redis缓存
             return retConfig.getConfigValue();
         }
         return StringUtils.EMPTY;

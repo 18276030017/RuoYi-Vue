@@ -489,7 +489,7 @@ public class SysUserServiceImpl implements ISysUserService
         int failureNum = 0;
         StringBuilder successMsg = new StringBuilder();
         StringBuilder failureMsg = new StringBuilder();
-        String password = configService.selectConfigByKey("sys.user.initPassword");
+        String password = configService.selectConfigByKey("sys.user.initPassword");//查询是否配置了“sys.user.initPassword”这个参数权限
         for (SysUser user : userList)
         {
             try
@@ -499,7 +499,7 @@ public class SysUserServiceImpl implements ISysUserService
                 if (StringUtils.isNull(u))
                 {
                     BeanValidators.validateWithException(validator, user);
-                    user.setPassword(SecurityUtils.encryptPassword(password));
+                    user.setPassword(SecurityUtils.encryptPassword(password));//对获取到的密码进行加密
                     user.setCreateBy(operName);
                     userMapper.insertUser(user);
                     successNum++;
@@ -508,8 +508,8 @@ public class SysUserServiceImpl implements ISysUserService
                 else if (isUpdateSupport)
                 {
                     BeanValidators.validateWithException(validator, user);
-                    checkUserAllowed(u);
-                    checkUserDataScope(u.getUserId());
+                    checkUserAllowed(u);//检查用户是否为管理员
+                    checkUserDataScope(u.getUserId());//检查用户是否拥有数据权限
                     user.setUserId(u.getUserId());
                     user.setUpdateBy(operName);
                     userMapper.updateUser(user);

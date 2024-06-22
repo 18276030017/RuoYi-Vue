@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.alarm.mapper.AlarmRecordMapper">
+    
+    <resultMap type="AlarmRecord" id="AlarmRecordResult">
+        <result property="id"    column="id"    />
+        <result property="alarmId"    column="alarm_id"    />
+        <result property="alarmName"    column="alarm_name"    />
+        <result property="level"    column="level"    />
+        <result property="targetType"    column="target_type"    />
+        <result property="targetName"    column="target_name"    />
+        <result property="message"    column="message"    />
+        <result property="alarmTime"    column="alarm_time"    />
+        <result property="state"    column="state"    />
+    </resultMap>
+
+    <sql id="selectAlarmRecordVo">
+        select id, alarm_id, alarm_name, level, target_type, target_name, message, alarm_time, state from alarm_record
+    </sql>
+
+    <select id="selectAlarmRecordList" parameterType="AlarmRecord" resultMap="AlarmRecordResult">
+        <include refid="selectAlarmRecordVo"/>
+        <where>  
+            <if test="alarmId != null  and alarmId != ''"> and alarm_id = #{alarmId}</if>
+            <if test="alarmName != null  and alarmName != ''"> and alarm_name like concat('%', #{alarmName}, '%')</if>
+            <if test="level != null "> and level = #{level}</if>
+            <if test="targetType != null  and targetType != ''"> and target_type = #{targetType}</if>
+            <if test="targetName != null  and targetName != ''"> and target_name like concat('%', #{targetName}, '%')</if>
+            <if test="message != null  and message != ''"> and message = #{message}</if>
+            <if test="alarmTime != null "> and alarm_time = #{alarmTime}</if>
+            <if test="state != null  and state != ''"> and state = #{state}</if>
+        </where>
+    </select>
+    
+    <select id="selectAlarmRecordById" parameterType="Long" resultMap="AlarmRecordResult">
+        <include refid="selectAlarmRecordVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAlarmRecord" parameterType="AlarmRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into alarm_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="alarmId != null and alarmId != ''">alarm_id,</if>
+            <if test="alarmName != null and alarmName != ''">alarm_name,</if>
+            <if test="level != null">level,</if>
+            <if test="targetType != null">target_type,</if>
+            <if test="targetName != null">target_name,</if>
+            <if test="message != null">message,</if>
+            <if test="alarmTime != null">alarm_time,</if>
+            <if test="state != null">state,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="alarmId != null and alarmId != ''">#{alarmId},</if>
+            <if test="alarmName != null and alarmName != ''">#{alarmName},</if>
+            <if test="level != null">#{level},</if>
+            <if test="targetType != null">#{targetType},</if>
+            <if test="targetName != null">#{targetName},</if>
+            <if test="message != null">#{message},</if>
+            <if test="alarmTime != null">#{alarmTime},</if>
+            <if test="state != null">#{state},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAlarmRecord" parameterType="AlarmRecord">
+        update alarm_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="alarmId != null and alarmId != ''">alarm_id = #{alarmId},</if>
+            <if test="alarmName != null and alarmName != ''">alarm_name = #{alarmName},</if>
+            <if test="level != null">level = #{level},</if>
+            <if test="targetType != null">target_type = #{targetType},</if>
+            <if test="targetName != null">target_name = #{targetName},</if>
+            <if test="message != null">message = #{message},</if>
+            <if test="alarmTime != null">alarm_time = #{alarmTime},</if>
+            <if test="state != null">state = #{state},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAlarmRecordById" parameterType="Long">
+        delete from alarm_record where id = #{id}
+    </delete>
+
+    <delete id="deleteAlarmRecordByIds" parameterType="String">
+        delete from alarm_record where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

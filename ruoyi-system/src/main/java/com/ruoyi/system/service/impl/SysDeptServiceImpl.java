@@ -71,7 +71,11 @@ public class SysDeptServiceImpl implements ISysDeptService
     public List<SysDept> buildDeptTree(List<SysDept> depts)
     {
         List<SysDept> returnList = new ArrayList<SysDept>();
-        List<Long> tempList = depts.stream().map(SysDept::getDeptId).collect(Collectors.toList());
+        // Collectors.toList() 用来结束Stream流;
+        // map():用于映射每个元素到对应的结果。
+        // stream只能被“消费”一次，一旦遍历过就会失效，就像容器的迭代器那样，想要再次遍历必须重新生成
+        //将List<实体类>转换成List<基本类型>;
+        List<Long> tempList = depts.stream().map(SysDept::getDeptId).collect(Collectors.toList());//把数据放到map根据user.getId(条件) 循环 在转换成list
         for (SysDept dept : depts)
         {
             // 如果是顶级节点, 遍历该父节点的所有子节点

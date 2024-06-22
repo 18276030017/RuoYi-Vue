@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.alarm.mapper.AlarmConfigMapper">
+    
+    <resultMap type="AlarmConfig" id="AlarmConfigResult">
+        <result property="id"    column="id"    />
+        <result property="alarmId"    column="alarm_id"    />
+        <result property="name"    column="name"    />
+        <result property="targetType"    column="target_type"    />
+        <result property="level"    column="level"    />
+        <result property="sceneName"    column="scene_name"    />
+        <result property="alarmRule"    column="alarm_rule"    />
+        <result property="state"    column="state"    />
+        <result property="description"    column="description"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="modifyTime"    column="modify_time"    />
+    </resultMap>
+
+    <sql id="selectAlarmConfigVo">
+        select id, alarm_id, name, target_type, level, scene_name, alarm_rule, state, description, create_time, modify_time from alarm_config
+    </sql>
+
+    <select id="selectAlarmConfigList" parameterType="AlarmConfig" resultMap="AlarmConfigResult">
+        <include refid="selectAlarmConfigVo"/>
+        <where>  
+            <if test="alarmId != null  and alarmId != ''"> and alarm_id = #{alarmId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="targetType != null  and targetType != ''"> and target_type = #{targetType}</if>
+            <if test="level != null "> and level = #{level}</if>
+            <if test="sceneName != null  and sceneName != ''"> and scene_name like concat('%', #{sceneName}, '%')</if>
+            <if test="alarmRule != null  and alarmRule != ''"> and alarm_rule = #{alarmRule}</if>
+            <if test="state != null  and state != ''"> and state = #{state}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="modifyTime != null "> and modify_time = #{modifyTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectAlarmConfigById" parameterType="Long" resultMap="AlarmConfigResult">
+        <include refid="selectAlarmConfigVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAlarmConfig" parameterType="AlarmConfig" useGeneratedKeys="true" keyProperty="id">
+        insert into alarm_config(
+            <if test="alarmId != null and alarmId != ''">alarm_id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="targetType != null and targetType != ''">target_type,</if>
+            <if test="level != null">level,</if>
+            <if test="sceneName != null">scene_name,</if>
+            <if test="alarmRule != null">alarm_rule,</if>
+            <if test="state != null and state != ''">state,</if>
+            <if test="description != null">description,</if>
+            create_time
+        )values (
+            <if test="alarmId != null and alarmId != ''">#{alarmId},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="targetType != null and targetType != ''">#{targetType},</if>
+            <if test="level != null">#{level},</if>
+            <if test="sceneName != null">#{sceneName},</if>
+            <if test="alarmRule != null">#{alarmRule},</if>
+            <if test="state != null and state != ''">#{state},</if>
+            <if test="description != null">#{description},</if>
+            sysdate()
+        )
+    </insert>
+
+    <update id="updateAlarmConfig" parameterType="AlarmConfig">
+        update alarm_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="alarmId != null and alarmId != ''">alarm_id = #{alarmId},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="targetType != null and targetType != ''">target_type = #{targetType},</if>
+            <if test="level != null">level = #{level},</if>
+            <if test="sceneName != null">scene_name = #{sceneName},</if>
+            <if test="alarmRule != null">alarm_rule = #{alarmRule},</if>
+            <if test="state != null and state != ''">state = #{state},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="modifyTime != null">modify_time = #{modifyTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAlarmConfigById" parameterType="Long">
+        delete from alarm_config where id = #{id}
+    </delete>
+
+    <delete id="deleteAlarmConfigByIds" parameterType="String">
+        delete from alarm_config where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

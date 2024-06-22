@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.notice.mapper.NotifyHistoryMapper">
+    
+    <resultMap type="NotifyHistory" id="NotifyHistoryResult">
+        <result property="id"    column="id"    />
+        <result property="notifierId"    column="notifier_id"    />
+        <result property="noteName"    column="note_name"    />
+        <result property="templateId"    column="template_id"    />
+        <result property="template"    column="template"    />
+        <result property="context"    column="context"    />
+        <result property="provider"    column="provider"    />
+        <result property="notifyType"    column="notify_type"    />
+        <result property="notifyTime"    column="notify_time"    />
+        <result property="retryTimes"    column="retry_times"    />
+    </resultMap>
+
+    <sql id="selectNotifyHistoryVo">
+        select id, notifier_id, note_name, template_id, template, context, provider, notify_type, notify_time, retry_times from notify_history
+    </sql>
+
+    <select id="selectNotifyHistoryList" parameterType="NotifyHistory" resultMap="NotifyHistoryResult">
+        <include refid="selectNotifyHistoryVo"/>
+        <where>  
+            <if test="notifierId != null  and notifierId != ''"> and notifier_id = #{notifierId}</if>
+            <if test="noteName != null  and noteName != ''"> and note_name like concat('%', #{noteName}, '%')</if>
+            <if test="templateId != null  and templateId != ''"> and template_id = #{templateId}</if>
+            <if test="template != null  and template != ''"> and template = #{template}</if>
+            <if test="context != null  and context != ''"> and context = #{context}</if>
+            <if test="provider != null  and provider != ''"> and provider = #{provider}</if>
+            <if test="notifyType != null  and notifyType != ''"> and notify_type = #{notifyType}</if>
+            <if test="notifyTime != null "> and notify_time = #{notifyTime}</if>
+            <if test="retryTimes != null "> and retry_times = #{retryTimes}</if>
+        </where>
+    </select>
+    
+    <select id="selectNotifyHistoryById" parameterType="Long" resultMap="NotifyHistoryResult">
+        <include refid="selectNotifyHistoryVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertNotifyHistory" parameterType="NotifyHistory" useGeneratedKeys="true" keyProperty="id">
+        insert into notify_history
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="notifierId != null and notifierId != ''">notifier_id,</if>
+            <if test="noteName != null">note_name,</if>
+            <if test="templateId != null and templateId != ''">template_id,</if>
+            <if test="template != null">template,</if>
+            <if test="context != null">context,</if>
+            <if test="provider != null and provider != ''">provider,</if>
+            <if test="notifyType != null and notifyType != ''">notify_type,</if>
+            <if test="notifyTime != null">notify_time,</if>
+            <if test="retryTimes != null">retry_times,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="notifierId != null and notifierId != ''">#{notifierId},</if>
+            <if test="noteName != null">#{noteName},</if>
+            <if test="templateId != null and templateId != ''">#{templateId},</if>
+            <if test="template != null">#{template},</if>
+            <if test="context != null">#{context},</if>
+            <if test="provider != null and provider != ''">#{provider},</if>
+            <if test="notifyType != null and notifyType != ''">#{notifyType},</if>
+            <if test="notifyTime != null">#{notifyTime},</if>
+            <if test="retryTimes != null">#{retryTimes},</if>
+         </trim>
+    </insert>
+
+    <update id="updateNotifyHistory" parameterType="NotifyHistory">
+        update notify_history
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="notifierId != null and notifierId != ''">notifier_id = #{notifierId},</if>
+            <if test="noteName != null">note_name = #{noteName},</if>
+            <if test="templateId != null and templateId != ''">template_id = #{templateId},</if>
+            <if test="template != null">template = #{template},</if>
+            <if test="context != null">context = #{context},</if>
+            <if test="provider != null and provider != ''">provider = #{provider},</if>
+            <if test="notifyType != null and notifyType != ''">notify_type = #{notifyType},</if>
+            <if test="notifyTime != null">notify_time = #{notifyTime},</if>
+            <if test="retryTimes != null">retry_times = #{retryTimes},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteNotifyHistoryById" parameterType="Long">
+        delete from notify_history where id = #{id}
+    </delete>
+
+    <delete id="deleteNotifyHistoryByIds" parameterType="String">
+        delete from notify_history where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

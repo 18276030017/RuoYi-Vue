@@ -99,7 +99,6 @@ public class SysLoginService
         // 生成token
         return tokenService.createToken(loginUser);
     }
-
     /**
      * 校验验证码
      * 
@@ -108,7 +107,7 @@ public class SysLoginService
      * @param uuid 唯一标识
      * @return 结果
      */
-    public void validateCaptcha(String username, String code, String uuid)
+    public void  validateCaptcha(String username, String code, String uuid)
     {
         boolean captchaEnabled = configService.selectCaptchaEnabled();
         if (captchaEnabled)

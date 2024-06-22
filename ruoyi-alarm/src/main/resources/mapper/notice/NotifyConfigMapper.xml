@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.notice.mapper.NotifyConfigMapper">
+    
+    <resultMap type="NotifyConfig" id="NotifyConfigResult">
+        <result property="id"    column="id"    />
+        <result property="notifierId"    column="notifier_id"    />
+        <result property="name"    column="name"    />
+        <result property="type"    column="type"    />
+        <result property="provider"    column="provider"    />
+        <result property="description"    column="description"    />
+        <result property="retryPolicy"    column="retry_policy"    />
+        <result property="maxRetryTimes"    column="max_retry_times"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="configuration"    column="configuration"    />
+    </resultMap>
+
+    <sql id="selectNotifyConfigVo">
+        select id, notifier_id, name, type, provider, description, retry_policy, max_retry_times, creator_id, create_time, configuration from notify_config
+    </sql>
+
+    <select id="selectNotifyConfigList" parameterType="NotifyConfig" resultMap="NotifyConfigResult">
+        <include refid="selectNotifyConfigVo"/>
+        <where>  
+            <if test="notifierId != null  and notifierId != ''"> and notifier_id = #{notifierId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="provider != null  and provider != ''"> and provider = #{provider}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="retryPolicy != null  and retryPolicy != ''"> and retry_policy = #{retryPolicy}</if>
+            <if test="maxRetryTimes != null "> and max_retry_times = #{maxRetryTimes}</if>
+            <if test="creatorId != null  and creatorId != ''"> and creator_id = #{creatorId}</if>
+            <if test="configuration != null  and configuration != ''"> and configuration = #{configuration}</if>
+        </where>
+    </select>
+    
+    <select id="selectNotifyConfigById" parameterType="Long" resultMap="NotifyConfigResult">
+        <include refid="selectNotifyConfigVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertNotifyConfig" parameterType="NotifyConfig" useGeneratedKeys="true" keyProperty="id">
+        insert into notify_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="notifierId != null and notifierId != ''">notifier_id,</if>
+            <if test="name != null">name,</if>
+            <if test="type != null">type,</if>
+            <if test="provider != null">provider,</if>
+            <if test="description != null">description,</if>
+            <if test="retryPolicy != null">retry_policy,</if>
+            <if test="maxRetryTimes != null">max_retry_times,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="configuration != null">configuration,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="notifierId != null and notifierId != ''">#{notifierId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="type != null">#{type},</if>
+            <if test="provider != null">#{provider},</if>
+            <if test="description != null">#{description},</if>
+            <if test="retryPolicy != null">#{retryPolicy},</if>
+            <if test="maxRetryTimes != null">#{maxRetryTimes},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="configuration != null">#{configuration},</if>
+         </trim>
+    </insert>
+
+    <update id="updateNotifyConfig" parameterType="NotifyConfig">
+        update notify_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="notifierId != null and notifierId != ''">notifier_id = #{notifierId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="provider != null">provider = #{provider},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="retryPolicy != null">retry_policy = #{retryPolicy},</if>
+            <if test="maxRetryTimes != null">max_retry_times = #{maxRetryTimes},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="configuration != null">configuration = #{configuration},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteNotifyConfigById" parameterType="Long">
+        delete from notify_config where id = #{id}
+    </delete>
+
+    <delete id="deleteNotifyConfigByIds" parameterType="String">
+        delete from notify_config where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
